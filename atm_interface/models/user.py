@@ -26,19 +26,13 @@ class UserBase(BaseModel):
         return v
 
 class UserCreate(UserBase):
-    password: str = Field(..., min_length=8)
+    pin: str = Field(..., min_length=4, max_length=4)
 
-    @field_validator('password')
+    @field_validator('pin')
     @classmethod
-    def password_strength(cls, v: str) -> str:
-        if not re.search(r'[A-Z]', v):
-            raise ValueError('Password must contain at least one uppercase letter')
-        if not re.search(r'[a-z]', v):
-            raise ValueError('Password must contain at least one lowercase letter')
-        if not re.search(r'\d', v):
-            raise ValueError('Password must contain at least one number')
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', v):
-            raise ValueError('Password must contain at least one special character')
+    def pin_digits(cls, v: str) -> str:
+        if not re.match(r'^\d{4}$', v):
+            raise ValueError('PIN must be a 4-digit number')
         return v
 
 class UserUpdate(BaseModel):
@@ -82,7 +76,7 @@ class UserResponse(BaseModel):
 
 class UserLogin(BaseModel):
     username: str
-    password: str
+    pin: str
 
 class UserLoginResponse(BaseModel):
     access_token: str

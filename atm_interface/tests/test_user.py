@@ -15,7 +15,7 @@ def valid_user_data():
         'full_name': 'Test User',
         'email': 'test@example.com',
         'phone_number': '+1234567890',
-        'password': 'TestPass123!'
+        'pin': '1234'
     }
 
 @pytest.fixture
@@ -37,7 +37,7 @@ def test_user_create_valid(valid_user_data):
     assert user.full_name == valid_user_data['full_name']
     assert user.email == valid_user_data['email']
     assert user.phone_number == valid_user_data['phone_number']
-    assert user.password == valid_user_data['password']
+    assert user.pin == valid_user_data['pin']
 
 def test_user_create_invalid_username():
     """Test creating a user with invalid username"""
@@ -46,7 +46,7 @@ def test_user_create_invalid_username():
         'full_name': 'Test User',
         'email': 'test@example.com',
         'phone_number': '+1234567890',
-        'password': 'TestPass123!'
+        'pin': '1234'
     }
     with pytest.raises(ValidationError) as exc_info:
         UserCreate(**invalid_data)
@@ -59,11 +59,11 @@ def test_user_create_invalid_password():
         'full_name': 'Test User',
         'email': 'test@example.com',
         'phone_number': '+1234567890',
-        'password': 'weakpass'  # Missing requirements
+        'pin': 'weak'
     }
     with pytest.raises(ValidationError) as exc_info:
         UserCreate(**invalid_data)
-    assert 'Password must contain at least one uppercase letter' in str(exc_info.value)
+    assert 'PIN must be a 4-digit number' in str(exc_info.value)
 
 def test_user_create_invalid_phone():
     """Test creating a user with invalid phone number"""
@@ -72,7 +72,7 @@ def test_user_create_invalid_phone():
         'full_name': 'Test User',
         'email': 'test@example.com',
         'phone_number': 'invalid-phone',
-        'password': 'TestPass123!'
+        'pin': '1234'
     }
     with pytest.raises(ValidationError) as exc_info:
         UserCreate(**invalid_data)
@@ -93,7 +93,7 @@ def test_user_update_valid(valid_user_data):
 def test_user_update_invalid_password():
     """Test updating a user with invalid password"""
     update_data = {
-        'password': 'weakpass'  # Missing requirements
+        'password': 'weakpass'
     }
     with pytest.raises(ValidationError) as exc_info:
         UserUpdate(**update_data)
@@ -114,11 +114,11 @@ def test_user_login():
     """Test the UserLogin model"""
     login_data = {
         'username': 'testuser123',
-        'password': 'TestPass123!'
+        'pin': '1234'
     }
     login = UserLogin(**login_data)
     assert login.username == login_data['username']
-    assert login.password == login_data['password']
+    assert login.pin == login_data['pin']
 
 def test_user_base_optional_phone():
     """Test UserBase with optional phone number"""

@@ -66,11 +66,11 @@ def rate_limit(limit: int = 60, window: int = 60):
     """
     def decorator(f):
         @wraps(f)
-        async def decorated(*args, **kwargs):
-            client_id = await get_client_identifier()
+        def decorated(*args, **kwargs):
+            client_id = asyncio.run(get_client_identifier())
             key = f"rate_limit:{client_id}:{f.__name__}"
             
-            is_allowed, remaining = await check_rate_limit(key, limit, window)
+            is_allowed, remaining = asyncio.run(check_rate_limit(key, limit, window))
             
             if not is_allowed:
                 return jsonify({
@@ -79,7 +79,7 @@ def rate_limit(limit: int = 60, window: int = 60):
                 }), 429
             
             # Add rate limit headers
-            response = await f(*args, **kwargs)
+            response = f(*args, **kwargs)
 
             # Handle synchronous response
             if isinstance(response, tuple):

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Python
 __pycache__/
 *.py[cod]
@@ -40,6 +39,3 @@ ENV/
 # OS specific
 .DS_Store
 Thumbs.db
-=======
-venv/
->>>>>>> 5f3f573 (Flattened atm_interface into main repository)

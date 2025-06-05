@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Interface (Phone View)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Link for the new JavaScript file -->
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="phone-bezel">
+            <div class="phone-screen">
+
+                <!-- Initial Choice View -->
+                <div id="initial-view" class="atm-view">
+                    <div class="atm-screen">
+                        <div class="screen-content">
+                            <h2>Welcome to the ATM</h2>
+                            <p>Please select an option:</p>
+                            <button type="button" id="show-register">Register</button>
+                            <button type="button" id="show-login">Login</button>
+                        </div>
+                    </div>
+                     <div class="atm-card-slot">
+                        <p>Card Slot</p>
+                    </div>
+                </div>
+
+                <!-- Registration View -->
+                <div id="register-view" class="atm-view" style="display: none;">
+                     <div class="atm-screen">
+                        <div class="screen-content">
+                            <h2>Register New User</h2>
+                            <form id="register-form">
+                                <label for="reg-username">Username:</label><br>
+                                <input type="text" id="reg-username" name="username" required><br><br>
+
+                                <label for="reg-full-name">Full Name:</label><br>
+                                <input type="text" id="reg-full-name" name="full_name" required><br><br>
+
+                                <label for="reg-email">Email:</label><br>
+                                <input type="email" id="reg-email" name="email" required><br><br>
+
+                                <label for="reg-phone">Phone Number:</label><br>
+                                <input type="text" id="reg-phone" name="phone_number"><br><br>
+
+                                <label for="reg-pin">PIN (4 digits):</label><br>
+                                <input type="password" id="reg-pin" name="pin" maxlength="4" required><br><br>
+
+                                <button type="submit">Register</button>
+                                <button type="button" class="back-button">Back</button>
+                            </form>
+                             <p id="register-message"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Login View -->
+                <div id="login-view" class="atm-view" style="display: none;">
+                    <div class="atm-screen">
+                        <div class="screen-content">
+                             <h2>User Login</h2>
+                            <form id="login-form">
+                                <label for="login-username">Username:</label><br>
+                                <input type="text" id="login-username" name="username" required><br><br>
+
+                                <label for="login-pin">PIN:</label><br>
+                                <input type="password" id="login-pin" name="pin" maxlength="4" required><br><br>
+
+                                <button type="submit">Login</button>
+                                 <button type="button" class="back-button">Back</button>
+                            </form>
+                             <p id="login-message"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ATM Operations View -->
+                 <div id="operations-view" class="atm-view" style="display: none;">
+                    <div class="atm-screen">
+                        <div class="screen-content">
+                            <h2>ATM Operations</h2>
+                            <p>Welcome, <span id="logged-in-username"></span>!</p>
+                            <p>Choose an operation:</p>
+                            <button type="button" id="check-balance-button">Check Balance</button>
+                            <button type="button" class="transaction-button" data-transaction-type="deposit">Deposit</button>
+                            <button type="button" class="transaction-button" data-transaction-type="withdraw">Withdrawal</button>
+                            <button type="button" class="transaction-button" data-transaction-type="transfer">Transfer</button>
+                            <button type="button" class="transaction-button" data-transaction-type="mini-statement">Mini Statement</button>
+                             <button type="button" id="logout-button">Logout</button>
+                             <div id="balance-display"></div>
+                             <p id="operation-message"></p>
+                        </div>
+                    </div>
+                      <div class="atm-card-slot" style="display: none;">
+                         <!-- Card slot not needed after login -->
+                      </div>
+                 </div>
+
+                 <!-- Transaction Input View -->
+                 <div id="transaction-input-view" class="atm-view" style="display: none;">
+                     <div class="atm-screen">
+                         <div class="screen-content">
+                             <h2 id="transaction-type-title">Transaction Input</h2>
+                             <p id="transaction-input-label"></p>
+                             <input type="text" id="transaction-amount" readonly>
+                             <p id="transaction-input-message"></p>
+                             <button type="button" id="submit-transaction">Submit</button>
+                             <button type="button" class="back-button">Back</button>
+                         </div>
+                     </div>
+                      <div class="atm-keypad">
+                         <div class="key-row">
+                             <button type="button" class="keypad-key" data-value="1">1</button>
+                             <button type="button" class="keypad-key" data-value="2">2</button>
+                             <button type="button" class="keypad-key" data-value="3">3</button>
+                         </div>
+                         <div class="key-row">
+                             <button type="button" class="keypad-key" data-value="4">4</button>
+                             <button type="button" class="keypad-key" data-value="5">5</button>
+                             <button type="button" class="keypad-key" data-value="6">6</button>
+                         </div>
+                         <div class="key-row">
+                             <button type="button" class="keypad-key" data-value="7">7</button>
+                             <button type="button" class="keypad-key" data-value="8">8</button>
+                             <button type="button" class="keypad-key" data-value="9">9</button>
+                         </div>
+                         <div class="key-row">
+                             <button type="button" class="keypad-key clear">CLEAR</button>
+                             <button type="button" class="keypad-key" data-value="0">0</button>
+                             <button type="button" class="keypad-key enter">ENTER</button>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- Transaction Result View -->
+                 <div id="transaction-result-view" class="atm-view" style="display: none;">
+                     <div class="atm-screen">
+                         <div class="screen-content">
+                             <h2 id="result-title">Transaction Result</h2>
+                             <p id="result-message"></p>
+                             <button type="button" class="back-to-ops">Back to Operations</button>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- Keep the keypad and card slot for potential use or styling, but hide initially -->
+                <div class="atm-keypad" style="display: none;">
+                    <div class="key-row">
+                        <button type="button">1</button>
+                        <button type="button">2</button>
+                        <button type="button">3</button>
+                    </div>
+                    <div class="key-row">
+                        <button type="button">4</button>
+                        <button type="button">5</button>
+                        <button type="button">6</button>
+                    </div>
+                    <div class="key-row">
+                        <button type="button">7</button>
+                        <button type="button">8</button>
+                        <button type="button">9</button>
+                    </div>
+                    <div class="key-row">
+                        <button type="button" class="clear">CLEAR</button>
+                        <button type="button">0</button>
+                        <button type="button" class="enter">ENTER</button>
+                    </div>
+                </div>
+                 <div class="atm-card-slot" style="display: none;">
+                    <p>Card Slot</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

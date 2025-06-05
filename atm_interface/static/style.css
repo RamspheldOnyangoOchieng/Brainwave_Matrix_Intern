@@ -1,0 +1,307 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f7f6; /* Softer background */
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* More common sans-serif font */
+    overflow: hidden; /* Prevent body scroll */
+}
+
+.phone-container {
+    width: 340px; /* Slightly wider */
+    height: 650px; /* Slightly taller */
+    border: 12px solid #1a1a1a; /* Darker bezel */
+    border-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
+    overflow: hidden; /* Clip content outside border-radius */
+    position: relative;
+    background-color: #fff;
+    display: flex; /* Use flex to manage inner screen layout */
+    flex-direction: column;
+}
+
+.phone-bezel {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px; /* Match outer border-radius */
+    overflow: hidden; /* Ensure content inside bezel is clipped */
+}
+
+.phone-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #e9ecef; /* Light grey background for screen */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px; /* Increased padding */
+    box-sizing: border-box;
+    overflow-y: auto; /* Allow scrolling if screen content overflows vertically */
+}
+
+.atm-view {
+    width: 100%;
+    /* display handled by JS */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically by default */
+    flex-grow: 1; /* Allow views to take up available space */
+    padding: 10px 0; /* Add some vertical padding within views */
+    box-sizing: border-box;
+}
+
+.atm-screen {
+    width: 100%; /* Use full width of parent view */
+    /* height can be adjusted based on content or flex-grow */
+    background-color: #28a745; /* A pleasant green */
+    color: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px; /* Increased padding */
+    box-sizing: border-box;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.screen-content {
+    width: 100%; /* Ensure content takes full width within atm-screen */
+    max-height: 100%; /* Ensure content does not exceed atm-screen height */
+    overflow-y: auto; /* Allow scrolling within screen-content if needed */
+    padding: 0 10px; /* Add horizontal padding within content area */
+    box-sizing: border-box;
+}
+
+.screen-content h2 {
+    margin-top: 0;
+    font-size: 1.6em; /* Larger heading */
+    margin-bottom: 15px; /* Increased margin */
+    word-break: break-word; /* Break long words */
+}
+
+.screen-content p {
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 10px; /* Space below paragraphs */
+    word-break: break-word; /* Break long words */
+}
+
+/* Form Styling */
+#register-form, #login-form {
+    width: 100%;
+    max-width: 280px; /* Slightly wider forms */
+    text-align: left;
+    color: #333;
+    margin: 0 auto; /* Center forms */
+}
+
+#register-form label, #login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#register-form input[type="text"], 
+#register-form input[type="email"], 
+#register-form input[type="password"],
+#login-form input[type="text"], 
+#login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Space below inputs */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+#register-form input[type="text"]:focus, 
+#register-form input[type="email"]:focus, 
+#register-form input[type="password"]:focus,
+#login-form input[type="text"]:focus, 
+#login-form input[type="password"]:focus {
+    border-color: #007bff; /* Highlight on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+/* Button Styling */
+.atm-view button, .screen-content button {
+    padding: 10px 15px; /* Adjusted padding */
+    font-size: 1em; /* Consistent font size */
+    border: none; /* Remove default border */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease; /* Smooth transitions */
+    margin-top: 8px; /* Slightly reduced space between buttons */
+    width: 100%; /* Make buttons full width in forms/views */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Primary Action Buttons (Register, Login, Submit) */
+#show-register, #show-login, #register-form button[type="submit"], #login-form button[type="submit"], #submit-transaction {
+    background-color: #007bff; /* Primary blue */
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px; /* Space below action buttons */
+}
+
+#show-register:hover, #show-login:hover, #register-form button[type="submit"]:hover, #login-form button[type="submit"]:hover, #submit-transaction:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+#show-register:active, #show-login:active, #register-form button[type="submit"]:active, #login-form button[type="submit"]:active, #submit-transaction:active {
+    background-color: #004085; /* Even darker blue on active */
+}
+
+/* Secondary Buttons (Back, Transaction Types) */
+.back-button, .transaction-button, .back-to-ops {
+    background-color: #6c757d; /* Secondary grey */
+    color: white;
+}
+
+.back-button:hover, .transaction-button:hover, .back-to-ops:hover {
+    background-color: #545b62; /* Darker grey on hover */
+}
+
+.back-button:active, .transaction-button:active, .back-to-ops:active {
+    background-color: #3d3f42; /* Even darker grey on active */
+}
+
+/* Keypad Specific Buttons */
+.keypad-key {
+    width: 100%; /* Make keypad buttons fill grid cell */
+    padding: 15px 0; /* Adjust padding for keypad */
+}
+
+/* Keypad (if shown) */
+.atm-keypad {
+    width: 100%; /* Use full width */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px; /* Slightly less gap */
+    margin-top: auto; /* Push to bottom */
+    padding-top: 15px; /* Space above keypad */
+    border-top: 1px solid #adb5bd; /* Separator line */
+    flex-shrink: 0; /* Prevent keypad from shrinking */
+    box-sizing: border-box;
+}
+
+.atm-keypad button {
+    font-size: 1.2em; /* Slightly larger keypad numbers */
+    border: 1px solid #adb5bd; /* Softer border */
+    border-radius: 4px;
+    background-color: #e9ecef; /* Light grey background */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding: 15px 10px; /* Reset padding from general button rule */
+    width: auto; /* Reset width from general button rule */
+}
+
+.atm-keypad button:hover {
+    background-color: #dee2e6;
+}
+
+.atm-keypad button:active {
+    background-color: #ced4da;
+}
+
+.atm-keypad .clear {
+    background-color: #dc3545; /* Red for clear */
+    color: white;
+    font-weight: bold;
+}
+
+.atm-keypad .clear:hover {
+     background-color: #c82333;
+}
+
+.atm-keypad .clear:active {
+     background-color: #bd2130;
+}
+
+.atm-keypad .enter {
+    background-color: #28a745; /* Green for enter */
+    color: white;
+    font-weight: bold;
+}
+
+.atm-keypad .enter:hover {
+    background-color: #218838;
+}
+
+.atm-keypad .enter:active {
+    background-color: #1e7e34;
+}
+
+/* Card Slot (if shown) */
+.atm-card-slot {
+    width: 95%;
+    height: 40px;
+    background-color: #6c757d; /* Darker grey */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin-top: 20px; /* Space above slot */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Message Styling */
+#register-message, #login-message, #operation-message, #transaction-input-message, #result-message {
+    margin-top: 15px;
+    font-size: 0.9em;
+    text-align: center;
+    min-height: 1em; /* Reserve space for message */
+    color: #dc3545; /* Default to red for errors */
+    word-break: break-word; /* Break long words */
+}
+
+/* Success Message Styling */
+.success-message {
+    color: #28a745; /* Green for success */
+}
+
+/* Adjust screen content for forms */
+#register-view .screen-content, #login-view .screen-content, #transaction-input-view .screen-content, #transaction-result-view .screen-content {
+    justify-content: flex-start; /* Align items to top */
+    overflow-y: auto; /* Add scroll for long content */
+    padding: 0 10px; /* Ensure padding */
+}
+
+/* Specific adjustments for elements within screen content */
+#transaction-amount {
+    font-size: 1.5em; /* Larger font size for input */
+    text-align: center; /* Center the input text */
+    width: 100%; /* Use full width of screen-content padding */
+    margin-bottom: 15px; /* Space below input */
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: block; /* Make input a block element */
+}
+
+/* Operations view specific adjustments */
+#operations-view .screen-content {
+     justify-content: center; /* Center operations content */
+}
+
+#operations-view button {
+    margin-bottom: 10px; /* Space between operation buttons */
+}
+
+#balance-display {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #fff; /* Ensure text is visible on green background */
+} 

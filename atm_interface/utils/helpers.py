@@ -36,9 +36,17 @@ def verify_password(password: str, hashed_password: str) -> bool:
         bool: True if password matches, False otherwise
     """
     try:
+        # Add logging to see the values being compared
+        logger.info(f"Verifying password: Entered={password}, Hashed={hashed_password}")
+
         salt, stored_hash = hashed_password.split('$')
+        logger.info(f"Verifying password: Salt={salt}, Stored Hash={stored_hash}")
+
         hash_obj = hashlib.sha256((password + salt).encode())
-        return hash_obj.hexdigest() == stored_hash
+        calculated_hash = hash_obj.hexdigest()
+        logger.info(f"Verifying password: Calculated Hash={calculated_hash}")
+
+        return calculated_hash == stored_hash
     except Exception as e:
         logger.error(f"Error verifying password: {str(e)}")
         return False

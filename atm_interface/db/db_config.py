@@ -43,7 +43,7 @@ class DatabaseConfig:
             self._initialize_client()
         return self._client
 
-    async def execute_query(self, query: str, params: Dict[str, Any] = None) -> Any:
+    def execute_query(self, query: str, params: Dict[str, Any] = None) -> Any:
         """
         Execute a raw SQL query.
         
@@ -55,7 +55,7 @@ class DatabaseConfig:
             Any: Query results
         """
         try:
-            response = await self.client.rpc('execute_query', {
+            response = self.client.rpc('execute_query', {
                 'query': query,
                 'params': params or {}
             })
@@ -64,7 +64,7 @@ class DatabaseConfig:
             logger.error(f"Query execution failed: {str(e)}")
             raise
 
-    async def insert_record(self, table: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    def insert_record(self, table: str, data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Insert a record into the specified table.
         
@@ -76,31 +76,35 @@ class DatabaseConfig:
             Dict[str, Any]: Inserted record
         """
         try:
-            response = await self.client.table(table).insert(data).execute()
+            response = self.client.table(table).insert(data).execute()
             return response.data[0] if response.data else None
         except Exception as e:
             logger.error(f"Failed to insert record into {table}: {str(e)}")
             raise
 
-    async def get_record(self, table: str, query: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def get_record(self, table: str, query: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """
         Get a single record from the specified table.
-        
+
         Args:
             table (str): Table name
             query (Dict[str, Any]): Query conditions
-            
+
         Returns:
             Optional[Dict[str, Any]]: Retrieved record
         """
         try:
-            response = await self.client.table(table).select("*").match(query).execute()
-            return response.data[0] if response.data else None
+            response = self.client.table(table).select("*").match(query).execute()
+            
+            if response.data:
+                return response.data[0]
+            else:
+                return None
         except Exception as e:
             logger.error(f"Failed to get record from {table}: {str(e)}")
             raise
 
-    async def update_record(self, table: str, query: Dict[str, Any], data: Dict[str, Any]) -> Dict[str, Any]:
+    def update_record(self, table: str, query: Dict[str, Any], data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Update a record in the specified table.
         
@@ -113,13 +117,13 @@ class DatabaseConfig:
             Dict[str, Any]: Updated record
         """
         try:
-            response = await self.client.table(table).update(data).match(query).execute()
+            response = self.client.table(table).update(data).match(query).execute()
             return response.data[0] if response.data else None
         except Exception as e:
             logger.error(f"Failed to update record in {table}: {str(e)}")
             raise
 
-    async def delete_record(self, table: str, query: Dict[str, Any]) -> bool:
+    def delete_record(self, table: str, query: Dict[str, Any]) -> bool:
         """
         Delete a record from the specified table.
         
@@ -131,7 +135,7 @@ class DatabaseConfig:
             bool: True if deletion was successful
         """
         try:
-            response = await self.client.table(table).delete().match(query).execute()
+            response = self.client.table(table).delete().match(query).execute()
             return bool(response.data)
         except Exception as e:
             logger.error(f"Failed to delete record from {table}: {str(e)}")
