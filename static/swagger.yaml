@@ -1,0 +1,16 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+info:
+  description: API for ATM interface operations
+  title: ATM Interface API
+  version: 1.0.0
+openapi: 3.0.0
+security:
+- bearerAuth: []
+servers:
+- description: Development server
+  url: http://localhost:5000
