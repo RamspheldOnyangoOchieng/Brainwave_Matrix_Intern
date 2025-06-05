@@ -8,6 +8,8 @@ import asyncio
 import os
 from dotenv import load_dotenv
 import secrets
+import logging
+from utils.helpers import verify_password, hash_password
 
 # Load environment variables
 load_dotenv()
@@ -17,6 +19,8 @@ JWT_SECRET = os.getenv("JWT_SECRET", "your-secret-key")  # Change this in produc
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION = timedelta(hours=24)
 RESET_TOKEN_EXPIRATION = timedelta(hours=1)
+
+logger = logging.getLogger(__name__)
 
 def create_access_token(user_id: str) -> str:
     """Create a JWT access token for the user."""
@@ -60,7 +64,7 @@ def verify_reset_token(token: str) -> Optional[str]:
 def login_required(f):
     """Decorator to protect routes that require authentication."""
     @wraps(f)
-    def decorated(*args, **kwargs):
+    async def decorated(*args, **kwargs):
         token = None
         
         # Get token from Authorization header
@@ -77,23 +81,23 @@ def login_required(f):
         
         # Add user_id to request context
         request.user_id = user_id
-        return f(*args, **kwargs)
+        return await f(*args, **kwargs)
     
     return decorated
 
-async def verify_credentials(email: str, password: str) -> Optional[str]:
+async def verify_credentials(username: str, password: str) -> Optional[str]:
     """Verify user credentials and return user_id if valid."""
     try:
-        user = await db.get_record('users', {'email': email})
+        user = await db.get_record('users', {'username': username})
         if not user:
             return None
         
-        # Verify password (assuming password is hashed)
-        from utils.helpers import verify_password
-        if verify_password(password, user['password']):
+        # Use proper password hashing
+        if verify_password(password, user['password_hash']):
             return str(user['id'])
         return None
-    except Exception:
+    except Exception as e:
+        logger.error(f"Error verifying credentials: {str(e)}")
         return None
 
 async def generate_reset_token(email: str) -> Optional[str]:
@@ -133,12 +137,11 @@ async def reset_password(token: str, new_password: str) -> bool:
             return False
         
         # Hash new password
-        from utils.helpers import hash_password
         hashed_password = hash_password(new_password)
         
         # Update password and clear reset token
         await db.update_record('users', {'id': user_id}, {
-            'password': hashed_password,
+            'password_hash': hashed_password,
             'reset_token': None,
             'reset_token_expires': None
         })
