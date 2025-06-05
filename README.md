@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 # Brainwave_Matrix_Intern
-=======
+
 # ATM Interface
 
 A Flask-based API for an ATM interface, allowing users to perform various banking operations such as deposits, withdrawals, and transfers.
